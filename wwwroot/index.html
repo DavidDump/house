@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <title>SVG Animacio</title>
+    
+    <style>
+        :root{
+            background-color: #1e1e1e;
+            color: white;
+        }
+    </style>
+    
+    <script>
+        function Load(){
+            $("#SVG").load("haz.svg");
+        }
+
+        var red = false;
+        function Roof(){
+            if(red){
+                $("#roof").css({"fill": "#741619"});
+                red = false;
+            }else{
+                $("#roof").css({"fill": "#FF0000"});
+                red = true;
+            }
+
+        }
+
+        function Rotate(param){
+            let centerX = $("#center").attr("cx");
+            let centerY = $("#center").attr("cy");
+            
+            let sunCenterX = $("#sunCenter").attr("cx");
+            let sunCenterY = $("#sunCenter").attr("cy");
+            
+            let moonCenterX = $("#moonCenter").attr("cx");
+            let moonCenterY = $("#moonCenter").attr("cy");
+
+            let darknessValue = Math.sin(param/360);
+
+            $("#sunGroup").attr("transform", `rotate(${param}, ${centerX}, ${centerY})`);
+            $("#sunRays").attr("transform", `rotate(${2 * param}, ${sunCenterX}, ${sunCenterY})`);
+            
+            $("#moonGroup").attr("transform", `rotate(${param}, ${centerX}, ${centerY})`);
+            $("#moon").attr("transform", `rotate(${-param}, ${moonCenterX}, ${moonCenterY})`);
+
+            $("#darkness").css({"fill-opacity": darknessValue});
+        }
+
+        var rotation = 0;
+        var animationId = 0;
+        function Animate(){
+            rotation = $("#range").val();
+            if(animationId === 0){
+                animationId = setInterval(() => {
+                    rotation++;
+                    if(rotation > 360) rotation = 0;
+                    $("#range").val(rotation);
+                    Rotate(rotation);
+                }, 50);
+            }else{
+                clearInterval(animationId);
+                animationId = 0;
+            }
+        }
+    </script>
+</head>
+<body>
+    <button onclick="Load();">Load</button>
+    <button onclick="Roof();">Hazteto</button>
+    Nap magassaga: <input type="range" id="range" min="0" max="360" value="0" oninput="Rotate(this.value);" />
+    <button onclick="Animate();">Animacio</button>
+    <div id="SVG"></div>
+</body>
+</html>
