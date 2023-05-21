@@ -15,9 +15,9 @@
     </style>
     
     <script>
-        function Load(){
+        $("document").ready(() =>{
             $("#SVG").load("haz.svg");
-        }
+        });
 
         var red = false;
         function Roof(){
@@ -71,7 +71,6 @@
     </script>
 </head>
 <body>
-    <button onclick="Load();">Load</button>
     <button onclick="Roof();">Hazteto</button>
     Nap magassaga: <input type="range" id="range" min="0" max="360" value="0" oninput="Rotate(this.value);" />
     <button onclick="Animate();">Animacio</button>
